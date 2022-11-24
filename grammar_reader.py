@@ -45,5 +45,3 @@ def cfg_from_file(filepath):
     print("S = ", S)
 
     return (V, X, R, S)
-
-cfg_from_file("grammar.txt")
