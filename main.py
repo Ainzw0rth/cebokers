@@ -1,7 +1,7 @@
 # The entry point for javascript parsing
 import argparse as ag
 import os
-from cyk import CYK
+from CYK import CYK
 from language import string_to_grammar
 from FA import isOperasiValid, isVariable, isStringValid
 from grammar_reader import cfg_from_file
