@@ -36,12 +36,12 @@ def parseFile(filename):
 
     # # Get The CNF
     CFG = cfg_from_file("grammar.txt")
-    V = CFG_to_CNF(CFG[2])
-    print(V)
-    CNF = (CFG[0], CFG[1], V, CFG[3])
+    CNF =  CFG_to_CNF(CFG)
+    print(CNF)
+    # CNF = (CFG[0], CFG[1], V, CFG[3])
     
-    isAccepted = CYK(input_string, CNF)
-    print(isAccepted)
+    # isAccepted = CYK(input_string, CNF)
+    # print(isAccepted)
 
     return
 
