@@ -158,13 +158,13 @@ def handle_special_value(string):
         # Handle Comment
         if string[i] == "/" and string[i+1] == "/":
             j = i + 2
-            while not string[j] == "\n":
+            while not string[j] == "\n" and j < len(string) - 1:
                 j += 1
             string = string[:i] + "@CMT_SINGLE" + string[j-1:]
             i = j - 1
         elif string[i] == "/" and string[i+1] == "*":
             j = i + 2
-            while not (string[j] == "*" and string[j+1] == "/"):
+            while not (string[j] == "*" and string[j+1] == "/" and j < len(string) - 1):
                 j += 1
             string = string[:i] + "@CMT_MULTI" + string[j+2:]
             i = j -1
@@ -178,11 +178,10 @@ def handle_special_value(string):
 
                 # Handling Variables Definition
                 if current_str in defs:
-                    while string[j] not in def_end:
+                    while string[j] not in def_end and j < len(string) - 1:
                         j += 1
                     list_of_variable += get_variable_from_defs(string[i:j])
                     string = string[:i] + "@DEFS" + string[j:]
-                    print(string)
                     i = i + 6
 
                 # Handling Expression
@@ -190,7 +189,7 @@ def handle_special_value(string):
                     j_e = j
                     i_e = i - 1
                     successorWord = ""
-                    while successorWord not in exp_end:
+                    while successorWord not in exp_end and j_e <= len(string) - 1:
                         successorWord = ""
                         j_s = j_e
                         while j_s < len(string) and string[j_s] == " ":
@@ -200,13 +199,13 @@ def handle_special_value(string):
                             successorWord += string[j_e]
                             j_e += 1
                     predecessorWord = ""
-                    while predecessorWord not in exp_start:
+                    while predecessorWord not in exp_start and i_e >= 0:
                         predecessorWord = ""
                         i_s = i_e
-                        while i_s >= 0 and string[i_s] == " ":
+                        while i_s >= 0 and string[i_s] == " " and i_s >= 0:
                             i_s -= 1
                             i_e -= 1
-                        while i_e >= 0 and string[i_e] != " ":
+                        while i_e >= 0 and string[i_e] != " " and i_e > 0:
                             predecessorWord = string[i_e] + predecessorWord
                             i_e -= 1
                     list_of_expression.append(string[i_e+1:j_e])
@@ -215,10 +214,8 @@ def handle_special_value(string):
                 else:
                     i = j 
             else:
-                while string[i] == " ":
+                while string[i] == " " and i < len(string):
                     i += 1
-                    if i == len(string):
-                        break
 
     i = 0                    
     while i <= len(string) - 1:
@@ -262,8 +259,12 @@ def string_to_grammar(string):
     for i in range(len(init_str)):
         if len(init_str[i]) > 1 and init_str[i].endswith("\n"):
             init_str[i] = init_str[i][:-1]
+            if init_str[i] in STR_TO_GRAMMAR.keys():
+                converted_str.append(STR_TO_GRAMMAR[init_str[i]])
+                converted_str.append(STR_TO_GRAMMAR["\n"])
+                continue
         if init_str[i] in STR_TO_GRAMMAR.keys():
-            converted_str.append(STR_TO_GRAMMAR[init_str[i]])
+                converted_str.append(STR_TO_GRAMMAR[init_str[i]])
         else:
             converted_str.append(init_str[i])
     

@@ -1,1 +1,5 @@
-let i = 1
+try {
+
+} catch (e) {
+    let i = 0
+}

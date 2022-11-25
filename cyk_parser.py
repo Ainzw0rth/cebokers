@@ -23,6 +23,38 @@ def print_table(table):
         print(row[:len(row)-i])
         i -= 1
 
+def CYK_parse(CNF, string_input):
+    W = string_input
+    N = len(W)
+    T = [[set([]) for j in range(N)] for i in range(N)]
+
+    for j in range(N):
+        for head, body in CNF.items():
+            for rule in body:
+                if len(rule) == 1 and rule[0] == W[j]:
+                    T[j][j].add(head)
+
+        for i in range(j, -1, -1):
+            for k in range(i, j):
+                for head, body in CNF.items():
+                    for rule in body:
+                        if len(rule) == 2 and rule[0] in T[i][k] and rule[1] in T[k + 1][j]:
+                            T[i][j].add(head)
+
+    # print(T[0][N - 1])
+    print_table(T)
+    return len(T[0][N - 1]) != 0
+
+def get_list_highest(table):
+    w_length = len(table)
+    highest = []
+    for i in range(w_length-1, -1, -1):
+        for j in range(w_length):
+            if len(table[i][j]) > 0:
+                highest = table[i][j]
+                return highest
+                
+
 def CYK(CNF, input):
     # I.S. CNF adalah CFG dalam bentuk CNF
     #      input adalah string yang akan diuji
@@ -33,10 +65,10 @@ def CYK(CNF, input):
     
     w_length = len(input)
     R = CNF[2]
-    sys.stdout = open('CNF.txt', 'w')
-    for key, value in R.items():
-        print(key, value)
-        print()
+    # sys.stdout = open('CNF.txt', 'w')
+    # for key, value in R.items():
+    #     print(key, value)
+    #     print()
     # Inisialisasi tabel CYK
     table = [[[] for j in range(w_length)] for i in range(w_length)]
 
@@ -70,7 +102,7 @@ def CYK(CNF, input):
 
     # print_table(table)
     # Cek apakah Start Symbol ada di tabel CYK paling atas
-    if CNF[3] in table[w_length - 1][0]:
+    if CNF[3] in get_list_highest(table):
         return True
     else:
         return False
