@@ -1,5 +1,34 @@
 TERMINAL_SYMBOLS = [
     # Will be added later
+    ":",
+    "(",
+    ")",
+    "{",
+    "}",
+    "EPSILON",
+    "ENTER",
+    "CASE",
+    "DEFAULT",
+    "BREAK",
+    "IF",
+    "ELIF",
+    "ELSE",
+    "DO",
+    "WHILE",
+    "FOR",
+    "AWAIT",
+    "CONTINUE",
+    ";",
+    "ENTER",
+    "THROW",
+    "COMMENT",
+    "LET",
+    "VAR_NAME",
+    "VAR",
+    "DELETE",
+    "INT",
+    "STRING",
+    "TRY"
 ]
 
 VARIABLES = [
