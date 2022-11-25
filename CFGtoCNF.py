@@ -1,5 +1,5 @@
 from FA import isVariable
-from yangngecekterminal import is_terminal
+from grammar_reader import is_terminal
 
 # referensi : https://www.youtube.com/watch?v=7G0PwGrdlH8&ab_channel=Education4u
 

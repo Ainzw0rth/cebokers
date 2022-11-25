@@ -31,6 +31,10 @@ TERMINAL_SYMBOLS = [
     "TRY"
 ]
 
+def is_terminal(x):
+    TERMINAL_SYMBOLS = [":", "(", ")", "{", "}", "EPSILON", "ENTER", "CASE", "DEFAULT", "BREAK", "IF", "ELIF", "ELSE", "DO", "WHILE", "FOR", "AWAIT", "CONTINUE", ";", "ENTER", "THROW", "COMMENT", "LET", "VAR_NAME", "VAR", "DELETE", "INT", "STRING", "TRY"]
+    return x in TERMINAL_SYMBOLS
+
 VARIABLES = [
     # Will be added more later
 

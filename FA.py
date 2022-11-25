@@ -336,58 +336,63 @@ def stateSembilanOperasional(c):
     return state
 
 def isOperasiValid(s):
-    state = 0
-    kurungbuka = False
-    for i in s:
-        if i == " ":
-            continue
-        elif s.count("(") != s.count(")"):
-            return False
-        elif i == "(":
-            kurungbuka = True
-            if ")" not in s:
-                return False
-            else:
-                continue
-        elif i == ")":
-            if not kurungbuka:
-                return False
-            else:
-                kurungbuka = False
-                continue
-        else:
-            if state == 0:
-                state = startOperasional(i)
-            elif state == 1:
-                state = stateSatuOperasional(i)
-            # waktu state == 2
-            elif state == 2:
-                state = stateDuaOperasional(i)
-            elif state == 3:
-                state = stateTigaOperasional(i)
-            elif state == 4:
-                state = stateEmpatOperasional(i)
-            elif state == 5:
-                state = stateLimaOperasional(i)
-            elif state == 6:
-                state = stateEnamOperasional(i)
-            elif state == 8:
-                state = stateDelapanOperasional(i)
-            elif state == 9:
-                state = stateSembilanOperasional(i)
-            elif state == 10:
-                state = stateSepuluhOperasional(i)
-            elif state == 11:
-                state = stateSebelasOperasional(i)
-            elif state == 12:
-                state = stateDuabelasOperasional(i)
-            elif state == 13:
-                state = stateTigabelasOperasional(i)
-            elif state == 14:
-                state = stateEmpatbelasOperasional(i)
-            elif state == 17:
-                state = startStateDua(i)
-    if state == 9:
-        return True
-    else:
+    s.replace(" ", "")
+    sum = s.count("+=") + s.count("-=") + s.count("/=") + s.count("*=") + s.count("==") + s.count("<=") + s.count(">=") + s.count("<") + s.count(">") + s.count("=")
+    if sum > 1:
         return False
+    else:
+        state = 0
+        kurungbuka = False
+        for i in s:
+            if i == " ":
+                continue
+            elif s.count("(") != s.count(")"):
+                return False
+            elif i == "(":
+                kurungbuka = True
+                if ")" not in s:
+                    return False
+                else:
+                    continue
+            elif i == ")":
+                if not kurungbuka:
+                    return False
+                else:
+                    kurungbuka = False
+                    continue
+            else:
+                if state == 0:
+                    state = startOperasional(i)
+                elif state == 1:
+                    state = stateSatuOperasional(i)
+                # waktu state == 2
+                elif state == 2:
+                    state = stateDuaOperasional(i)
+                elif state == 3:
+                    state = stateTigaOperasional(i)
+                elif state == 4:
+                    state = stateEmpatOperasional(i)
+                elif state == 5:
+                    state = stateLimaOperasional(i)
+                elif state == 6:
+                    state = stateEnamOperasional(i)
+                elif state == 8:
+                    state = stateDelapanOperasional(i)
+                elif state == 9:
+                    state = stateSembilanOperasional(i)
+                elif state == 10:
+                    state = stateSepuluhOperasional(i)
+                elif state == 11:
+                    state = stateSebelasOperasional(i)
+                elif state == 12:
+                    state = stateDuabelasOperasional(i)
+                elif state == 13:
+                    state = stateTigabelasOperasional(i)
+                elif state == 14:
+                    state = stateEmpatbelasOperasional(i)
+                elif state == 17:
+                    state = startStateDua(i)
+        if state == 9:
+            return True
+        else:
+            return False
