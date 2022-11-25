@@ -4,9 +4,6 @@ STR_TO_GRAMMAR = {
 # For Literals    
     "\n": "ENTER",
     ";" : ";",
-    "//": "//",
-    "/*": "/*",
-    "*/": "*/",
     "(": "(",
     ")": ")",
     "{": "{",
@@ -267,6 +264,7 @@ def string_to_grammar(string):
                 converted_str.append(STR_TO_GRAMMAR[init_str[i]])
         else:
             converted_str.append(init_str[i])
-    
+
+    converted_str.append(STR_TO_GRAMMAR["\n"])
     # print(converted_str)
     return converted_str, expressions, variables

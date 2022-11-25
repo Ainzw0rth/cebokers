@@ -64,6 +64,9 @@ def CYK(CNF, input):
     # Main Reference: https://www.youtube.com/watch?v=VTH1k-xiswM
     
     w_length = len(input)
+    if w_length == 1:
+        return True
+
     R = CNF[2]
     # sys.stdout = open('CNF.txt', 'w')
     # for key, value in R.items():
@@ -100,7 +103,7 @@ def CYK(CNF, input):
                                 table[i - 1][j].append(prod)
     
 
-    # print_table(table)
+    print_table(table)
     # Cek apakah Start Symbol ada di tabel CYK paling atas
     if CNF[3] in get_list_highest(table):
         return True
