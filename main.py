@@ -45,7 +45,10 @@ def parseFile(filename):
     CNF = (CFG[0], CFG[1], V, CFG[3])
     
     isAccepted = CYK(CNF, input_string)
-    print("Syntax Correct: ", isAccepted)
+    if (isAccepted):
+        print("Accepted")
+    else:
+        print("Syntax Error")
 
     return
 
