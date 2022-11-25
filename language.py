@@ -149,7 +149,7 @@ def handle_special_value(string):
     defs = ["let", "var", "const"]
     exp_start = ["(", "[", "{", "true", "false", "null", "function", "async", "await", "try", "throw", "for", "while", "do", "if", "switch", "return", "break", "continue", ";"]
     exp_end = [")", "]", "}", ";", "else", "catch", "finally", "in", "of", "for", "while", "do", "if", "switch", "return", "break", "continue"]
-    def_end = [";", "\n"]
+    def_end = [";", "\n", ""]
     
     i = 0
     list_of_expression = []
@@ -181,7 +181,8 @@ def handle_special_value(string):
                     while string[j] not in def_end:
                         j += 1
                     list_of_variable += get_variable_from_defs(string[i:j])
-                    string = string[:i] + "@DEFS" + string[j-1:]
+                    string = string[:i] + "@DEFS" + string[j:]
+                    print(string)
                     i = i + 6
 
                 # Handling Expression
@@ -228,7 +229,7 @@ def handle_special_value(string):
                 current_str += string[j]
                 j += 1
             # Handling Variable
-            if current_str not in STR_TO_GRAMMAR.keys():
+            if current_str not in STR_TO_GRAMMAR.keys() and not current_str.startswith("@"):
                 if isNumber(current_str):
                     string = string[:i] + "@NUM" + string[j:]
                 elif isStringValid(current_str):
@@ -259,6 +260,8 @@ def string_to_grammar(string):
     init_str = remove_empty_str(init_str)
     
     for i in range(len(init_str)):
+        if len(init_str[i]) > 1 and init_str[i].endswith("\n"):
+            init_str[i] = init_str[i][:-1]
         if init_str[i] in STR_TO_GRAMMAR.keys():
             converted_str.append(STR_TO_GRAMMAR[init_str[i]])
         else:
