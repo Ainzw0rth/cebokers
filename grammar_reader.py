@@ -1,38 +1,19 @@
 TERMINAL_SYMBOLS = [
-    # Will be added later
-    ":",
-    "(",
-    ")",
-    "{",
-    "}",
-    "EPSILON",
-    "ENTER",
-    "CASE",
-    "DEFAULT",
-    "BREAK",
-    "IF",
-    "ELIF",
-    "ELSE",
-    "DO",
-    "WHILE",
-    "FOR",
-    "AWAIT",
-    "CONTINUE",
-    ";",
-    "ENTER",
-    "THROW",
-    "COMMENT",
-    "LET",
-    "VAR_NAME",
-    "VAR",
-    "DELETE",
-    "INT",
-    "STRING",
-    "TRY"
-]
+    'ENTER', ';', '//', '/*', 
+    '*/', '(', ')', '{', '}', 
+    '[', ']', ',', '.', ':', 
+    '=', 'DO', 'WHILE', 'BREAK', 
+    'CONTINUE', 'FOR', 'IN', 'OF', 
+    'DELETE', 'SWITCH', 'CASE', 'DEFAULT', 
+    'IF', 'ELSE', 'RETURN', 'ASYNC', 
+    'AWAIT', 'FUNCTION_C', 'VAR', 'LET', 
+    'CONST', 'TRY', 'CATCH', 'FINALLY', 
+    'THROW', 'TRUE', 'FALSE', 'NULL', 
+    'COMMENT_STMT', 'COMMENT_STMT', 'EXPRESSION', 
+    'DEFS', 'VAR_NAME', 'FUNCTION_CALL', 'EPSILON', 
+    'NUMBER', 'STRING']
 
 def is_terminal(x):
-    TERMINAL_SYMBOLS = [":", "(", ")", "{", "}", "EPSILON", "ENTER", "CASE", "DEFAULT", "BREAK", "IF", "ELIF", "ELSE", "DO", "WHILE", "FOR", "AWAIT", "CONTINUE", ";", "ENTER", "THROW", "COMMENT", "LET", "VAR_NAME", "VAR", "DELETE", "INT", "STRING", "TRY"]
     return x in TERMINAL_SYMBOLS
 
 VARIABLES = [

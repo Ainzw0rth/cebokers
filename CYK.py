@@ -96,4 +96,3 @@ def cartesian_product(l1, l2):
     return result
 
 # print(cartesian_product(['A','C'], []))
-print(CYK(CNF_example, "baaba"))

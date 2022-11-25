@@ -50,45 +50,6 @@ def CFG_to_CNF(CFG):
             for ruleSatuElemen in valueSatuElemen:
                 CFG[keySatuElemen].remove(ruleSatuElemen)
 
-
-    # STEP 3 : SEDERHANAKAN RULES YANG PRODUKNYA TERDIRI DARI MINIMAL SATU TERMINAL DAN SISANYA ADALAH BUKAN TERMINAL
-    RulesBaru = {}
-    RulesLama = {}
-
-    i = 0
-    for head, body in CFG.items():
-        for rule in body:
-            temp = []
-            ada = False
-            for r in rule:
-                temp.append(r)
-
-            for x in range(len(rule)):
-                if is_terminal(rule[x]):
-                    ada = True
-                    simbolbaruX = f"X{i}"
-                    i += 1
-                    RulesBaru[simbolbaruX] = [[rule[x]]]
-                    temp[x] = simbolbaruX
-
-            if ada:
-                if head not in RulesBaru.keys():
-                    RulesBaru[head] = [temp]
-                else:
-                    RulesBaru[head].append(temp)
-            else:
-                pass
-
-    for new_head, new_body in RulesBaru.items():
-        if new_head not in CFG.keys():
-            CFG[new_head] = new_body
-        else:
-            CFG[new_head].extend(new_body)
-
-    for del_head, del_body in RulesLama.items():
-        for del_rule in del_body:
-            CFG[del_head].remove(del_rule)
-            
     # substitusi grammar yang memiliki lebih dari 2 elemen pada produk
     i = 0
     RulesBaru = {}
@@ -132,6 +93,46 @@ def CFG_to_CNF(CFG):
     # hapus dari CFG
     for del_key, del_value in RulesLama.items():
         for del_rule in del_value:
-            CFG[del_key].remove(del_rule)
+            if del_rule in CFG[del_key]:
+                CFG[del_key].remove(del_rule)
+
+    # STEP 3 : SEDERHANAKAN RULES YANG PRODUKNYA TERDIRI DARI MINIMAL SATU TERMINAL DAN SISANYA ADALAH BUKAN TERMINAL
+    RulesBaru = {}
+    RulesLama = {}
+
+    i = 0
+    for head, body in CFG.items():
+        for rule in body:
+            temp = []
+            ada = False
+            for r in rule:
+                temp.append(r)
+
+            for x in range(len(rule)):
+                if is_terminal(rule[x]):
+                    ada = True
+                    simbolbaruX = f"X{i}"
+                    i += 1
+                    RulesBaru[simbolbaruX] = [[rule[x]]]
+                    temp[x] = simbolbaruX
+
+            if ada:
+                if head not in RulesBaru.keys():
+                    RulesBaru[head] = [temp]
+                else:
+                    RulesBaru[head].append(temp)
+            else:
+                pass
+
+    for new_head, new_body in RulesBaru.items():
+        if new_head not in CFG.keys():
+            CFG[new_head] = new_body
+        else:
+            CFG[new_head].extend(new_body)
+
+    for del_head, del_body in RulesLama.items():
+        for del_rule in del_body:
+            CFG[del_head].remove(del_rule)
+            
 
     return CFG

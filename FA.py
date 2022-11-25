@@ -337,7 +337,7 @@ def stateSembilanOperasional(c):
 
 def isOperasiValid(s):
     s.replace(" ", "")
-    sum = s.count("+=") + s.count("-=") + s.count("/=") + s.count("*=") + s.count("==") + s.count("<=") + s.count(">=") + s.count("<") + s.count(">") + s.count("=")
+    sum = s.count("+=") + s.count("-=") + s.count("/=") + s.count("*=") + s.count("==") + s.count("<=") + s.count(">=") + s.count("<") + s.count(">")
     if sum > 1:
         return False
     else:

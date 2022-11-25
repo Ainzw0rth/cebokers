@@ -2,6 +2,11 @@
 import argparse as ag
 import os
 from cyk import CYK
+from language import string_to_grammar
+from FA import isOperasiValid, isVariable, isStringValid
+from grammar_reader import cfg_from_file
+from CFGtoCNF import CFG_to_CNF
+
 
 def parseFile(filename):
     file = open(filename, 'r')
@@ -9,13 +14,34 @@ def parseFile(filename):
 
     file.close()
 
-    # # TODO: Get The CNF
-    # CNF = None
+    input_string, expressions, variables = string_to_grammar(input_string)
+    # print(expressions)
+    # print(variables)
+    
+    # # CEK ALL EXPRESSIONS VALIDITY
+    # expressionValid = True
+    # i = 0
+    # while expressionValid and i < len(expressions):
+    #     expressionValid = isOperasiValid(expressions[i])
+    #     i += 1
 
-    # # TODO: Check the javascript syntax with CYK
-    # CYK(CNF, input_string)
+    # print(expressionValid)
 
-    # print(input_string) 
+    # # CEK ALL VARIABLES VALIDITY
+    # variableValid = True
+    # i = 0
+    # while variableValid and i < len(variables):
+    #     variableValid = isVariable(variables[i])
+    #     i += 1
+
+    # # Get The CNF
+    CFG = cfg_from_file("grammar.txt")
+    V = CFG_to_CNF(CFG[2])
+    print(V)
+    CNF = (CFG[0], CFG[1], V, CFG[3])
+    
+    isAccepted = CYK(input_string, CNF)
+    print(isAccepted)
 
     return
 
