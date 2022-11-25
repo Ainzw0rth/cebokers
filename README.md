@@ -1,1 +1,6 @@
-# cebokers
+# TUBES TBFO K03/IF2124 2022/2023
+## KELOMPOK "CEBOKERS"
+NAMA ANGGOTA KELOMPOK :
+1. Addin Munawwar Yusuf (13521085)
+2. Louis Caesa Kesuma (13521069)
+3. Ilham Akbar (13521068)
