@@ -1,12 +1,11 @@
 # The entry point for javascript parsing
 import argparse as ag
 import os
-from CYK import CYK
+from cyk_parser import CYK, CYK_parse
 from language import string_to_grammar
 from FA import isOperasiValid, isVariable, isStringValid
 from grammar_reader import cfg_from_file
 from CFGtoCNF import CFG_to_CNF
-
 
 def parseFile(filename):
     file = open(filename, 'r')
@@ -14,7 +13,9 @@ def parseFile(filename):
 
     file.close()
 
+    print("Converting grammar...")
     input_string, expressions, variables = string_to_grammar(input_string)
+    print("Grammar converted")
     # print(expressions)
     # print(variables)
     
@@ -36,12 +37,11 @@ def parseFile(filename):
 
     # # Get The CNF
     CFG = cfg_from_file("grammar.txt")
-    CNF =  CFG_to_CNF(CFG)
-    print(CNF)
-    # CNF = (CFG[0], CFG[1], V, CFG[3])
+    V = CFG_to_CNF(CFG[2])
+    CNF = (CFG[0], CFG[1], V, CFG[3])
     
-    # isAccepted = CYK(input_string, CNF)
-    # print(isAccepted)
+    isAccepted = CYK(CNF, input_string)
+    print(isAccepted)
 
     return
 

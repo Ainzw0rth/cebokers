@@ -264,6 +264,5 @@ def string_to_grammar(string):
         else:
             converted_str.append(init_str[i])
     
+    # print(converted_str)
     return converted_str, expressions, variables
-
-print(STR_TO_GRAMMAR.values())

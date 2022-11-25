@@ -31,6 +31,7 @@ def CYK(CNF, input):
     
     w_length = len(input)
     R = CNF[2]
+    # print(CNF)
     # Inisialisasi tabel CYK
     table = [[[] for j in range(w_length)] for i in range(w_length)]
 
@@ -61,6 +62,8 @@ def CYK(CNF, input):
                             if rule in possible_constructor and prod not in table[i - 1][j]:
                                 table[i - 1][j].append(prod)
     
+
+    print_table(table)
     # Cek apakah Start Symbol ada di tabel CYK paling atas
     if CNF[3] in table[w_length - 1][0]:
         return True
@@ -96,3 +99,5 @@ def cartesian_product(l1, l2):
     return result
 
 # print(cartesian_product(['A','C'], []))
+# print(R)
+# CYK(CNF_example, "baaba")

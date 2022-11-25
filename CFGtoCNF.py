@@ -4,25 +4,6 @@ from grammar_reader import is_terminal
 # referensi : https://www.youtube.com/watch?v=7G0PwGrdlH8&ab_channel=Education4u
 
 def CFG_to_CNF(CFG):
-    # STEP 1: If the start symbol S occurs on some right side, create a new start symbol S' and a new production S' -> S.
-    list_head = list(CFG.keys())
-    list_body = list(CFG.values())
-    start_symbol = list_head[0]
-    add_new_rule = False
-
-    for rules in list_body:
-        for rule in rules:
-            if start_symbol in rule:
-                add_new_rule = True
-                break
-        if add_new_rule:
-            break
-
-    if add_new_rule:
-        new_rule = {"START" : [[start_symbol]]}
-        new_rule.update(CFG)
-        CFG = new_rule
-
     # STEP 2: Remove unit productions.
     contain_unit = True
 
@@ -171,4 +152,4 @@ def CFG_to_CNF(CFG):
         for del_rule in del_body:
             CFG[del_head].remove(del_rule)
 
-    print(CFG)
+    return CFG

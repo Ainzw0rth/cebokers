@@ -11,15 +11,12 @@ TERMINAL_SYMBOLS = [
     'THROW', 'TRUE', 'FALSE', 'NULL', 
     'COMMENT_STMT', 'COMMENT_STMT', 'EXPRESSION', 
     'DEFS', 'VAR_NAME', 'FUNCTION_CALL', 'EPSILON', 
-    'NUMBER', 'STRING']
+    'NUMBER', 'STRING'
+    ]
 
 def is_terminal(x):
     return x in TERMINAL_SYMBOLS
 
-VARIABLES = [
-    # Will be added more later
-
-]
 
 START_SYMBOL = "START"
 
@@ -33,7 +30,7 @@ def cfg_from_file(filepath):
     #      S adalah start symbol
     
     # Persiapkan variabel yang akan digunakan
-    V = VARIABLES
+    V = []
     X = TERMINAL_SYMBOLS
     R = {}
     S = START_SYMBOL 
@@ -43,13 +40,19 @@ def cfg_from_file(filepath):
     while line != "@":
         if (line[0] != "#" and line != "" and line != "\n"):
             production, rules = line.split(" -> ")
+            if production not in V and production not in X:
+                V.append(production)
             rules = rules.replace("\n", "")
             if production not in R.keys():
-                R[production] = [rules.split(" | ")]
+                R[production] = [rules.split(" ")]
+                # R[production] = R[production].split(" ")
             else:
-                R[production].append(rules.split(" | "))
+                inputted_rules = rules.split(" ")
+                if "" in inputted_rules:
+                    inputted_rules.remove("")
+                R[production].append(inputted_rules)
             
         line = file.readline()
-
+    
     file.close()
     return (V, X, R, S)
