@@ -27,7 +27,7 @@ def cfg_from_file(filepath):
     file = open(filepath, 'r')
     line = file.readline()
     while line != "@":
-        if (line[0] != "#" and line != ""):
+        if (line[0] != "#" and line != "" and line != "\n"):
             production, rules = line.split(" -> ")
             rules = rules.replace("\n", "")
             if production not in R.keys():
@@ -36,12 +36,6 @@ def cfg_from_file(filepath):
                 R[production].append(rules.split(" | "))
             
         line = file.readline()
-    
+
     file.close()
-
-    print("V = ", V)
-    print("X = ", X)
-    print("R = ", R)
-    print("S = ", S)
-
     return (V, X, R, S)
