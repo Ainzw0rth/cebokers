@@ -157,13 +157,13 @@ def handle_special_value(string):
             j = i + 2
             while not string[j] == "\n" and j < len(string) - 1:
                 j += 1
-            string = string[:i] + "@CMT_SINGLE" + string[j-1:]
+            string = string[:i] + " @CMT_SINGLE " + string[j-1:]
             i = j - 1
         elif string[i] == "/" and string[i+1] == "*":
             j = i + 2
             while not (string[j] == "*" and string[j+1] == "/" and j < len(string) - 1):
                 j += 1
-            string = string[:i] + "@CMT_MULTI" + string[j+2:]
+            string = string[:i] + " @CMT_MULTI " + string[j+2:]
             i = j -1
         else:
             if string[i] != " ":
@@ -178,7 +178,7 @@ def handle_special_value(string):
                     while string[j] not in def_end and j < len(string) - 1:
                         j += 1
                     list_of_variable += get_variable_from_defs(string[i:j])
-                    string = string[:i] + "@DEFS" + string[j:]
+                    string = string[:i] + " @DEFS " + string[j:]
                     i = i + 6
 
                 # Handling Expression
@@ -206,7 +206,7 @@ def handle_special_value(string):
                             predecessorWord = string[i_e] + predecessorWord
                             i_e -= 1
                     list_of_expression.append(string[i_e+1:j_e])
-                    string = string[:i_e+3] + "@EXP" + string[j_e-2:]
+                    string = string[:i_e+3] + " @EXP " + string[j_e-1:]
                     i = i_e + 9
                 else:
                     i = j 
@@ -225,12 +225,12 @@ def handle_special_value(string):
             # Handling Variable
             if current_str not in STR_TO_GRAMMAR.keys() and not current_str.startswith("@"):
                 if isNumber(current_str):
-                    string = string[:i] + "@NUM" + string[j:]
+                    string = string[:i] + " @NUM " + string[j:]
                 elif isStringValid(current_str):
-                    string = string[:i] + "@STR" + string[j:]
+                    string = string[:i] + " @STR " + string[j:]
                 else:
                     list_of_variable.append(current_str)
-                    string = string[:i] + "@VAR" + string[j:]
+                    string = string[:i] + " @VAR " + string[j:]
                 i = i + 5
             else:
                 i = j 

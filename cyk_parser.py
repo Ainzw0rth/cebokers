@@ -45,7 +45,7 @@ def CYK_parse(CNF, string_input):
     print_table(T)
     return len(T[0][N - 1]) != 0
 
-def get_list_highest(table):
+def get_list_highest_from_top(table):
     w_length = len(table)
     highest = []
     for i in range(w_length-1, -1, -1):
@@ -53,6 +53,14 @@ def get_list_highest(table):
             if len(table[i][j]) > 0:
                 highest = table[i][j]
                 return highest
+
+def get_list_highest_from_left(table):
+    w_length = len(table)
+    highest = []
+    for i in range(w_length-1, -1, -1):
+        if len(table[i][0]) > 0:
+            highest = table[i][0]
+            return highest
                 
 
 def CYK(CNF, input):
@@ -105,7 +113,7 @@ def CYK(CNF, input):
 
     print_table(table)
     # Cek apakah Start Symbol ada di tabel CYK paling atas
-    if CNF[3] in get_list_highest(table):
+    if CNF[3] in get_list_highest_from_left(table) or CNF[3] in get_list_highest_from_top(table):
         return True
     else:
         return False
