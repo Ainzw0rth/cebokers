@@ -1,26 +1,20 @@
 from FA import isVariable
-from grammar_processing import is_terminal
+from yangngecekterminal import is_terminal
+
+# referensi : https://www.youtube.com/watch?v=7G0PwGrdlH8&ab_channel=Education4u
 
 def CFG_to_CNF(CFG):
-    # buat start state yang baru
+    # STEP 1 : BUAT STARTSTATE YANG BARU
     listKey = list(CFG.keys())
-    listvalue = list(CFG.values())
-    # asumsi start state dituliskan paling awal di grammar
+    # asumsi start state awal dituliskan paling awal di grammar
     startStateAwal = listKey[0]
-    adaStartStateAwal = False
-
-    for rules in listvalue:
-        for rule in rules:
-            if startStateAwal in rule:
-                adaStartStateAwal = True
     
-    # tambahkan start state baru jika terdapat pengulangan state awal
-    if adaStartStateAwal:
-        startStateBaru = {"STARTSTATE" : [[startStateAwal]]}
-        startStateBaru.update(CFG)
-        CFG = startStateBaru
+    # tambahkan STARTSTATE ke CFG
+    startStateBaru = {"STARTSTATE" : [[startStateAwal]]}
+    startStateBaru.update(CFG)
+    CFG = startStateBaru
 
-    # hapus unit production
+    # STEP 2 : JADIKAN SEBAGAI NORMAL FORM
     ada = True
 
     # looping untuk menyederhanakan grammar
@@ -54,9 +48,47 @@ def CFG_to_CNF(CFG):
         # hapus grammar yang hanya terdiri dari satu elemen
         for keySatuElemen, valueSatuElemen in satuElemen.items():
             for ruleSatuElemen in valueSatuElemen:
-                if len(ruleSatuElemen) == 1:
-                    CFG[keySatuElemen].remove(ruleSatuElemen)
+                CFG[keySatuElemen].remove(ruleSatuElemen)
 
+
+    # STEP 3 : SEDERHANAKAN RULES YANG PRODUKNYA TERDIRI DARI MINIMAL SATU TERMINAL DAN SISANYA ADALAH BUKAN TERMINAL
+    RulesBaru = {}
+    RulesLama = {}
+
+    i = 0
+    for head, body in CFG.items():
+        for rule in body:
+            temp = []
+            ada = False
+            for r in rule:
+                temp.append(r)
+
+            for x in range(len(rule)):
+                if is_terminal(rule[x]):
+                    ada = True
+                    simbolbaruX = f"X{i}"
+                    i += 1
+                    RulesBaru[simbolbaruX] = [[rule[x]]]
+                    temp[x] = simbolbaruX
+
+            if ada:
+                if head not in RulesBaru.keys():
+                    RulesBaru[head] = [temp]
+                else:
+                    RulesBaru[head].append(temp)
+            else:
+                pass
+
+    for new_head, new_body in RulesBaru.items():
+        if new_head not in CFG.keys():
+            CFG[new_head] = new_body
+        else:
+            CFG[new_head].extend(new_body)
+
+    for del_head, del_body in RulesLama.items():
+        for del_rule in del_body:
+            CFG[del_head].remove(del_rule)
+            
     # substitusi grammar yang memiliki lebih dari 2 elemen pada produk
     i = 0
     RulesBaru = {}
@@ -70,15 +102,15 @@ def CFG_to_CNF(CFG):
 
             # looping hingga rulenya pada bagian produk tidak lebih dari 2
             while len(temp_rule) > 2:
-                # misalkan rule baru tersebut simbolnya Zi
-                ruleTambahan = f"Z{i}"
-                #
+                # misalkan rule baru tersebut simbolnya Yi
+                ruleTambahan = f"Y{i}"
+                i += 1
+                # simpan rules-rules baru agar nanti bisa ditambahkan
                 if key not in RulesBaru.keys():
                     RulesBaru[key] = [[temp_rule[0], ruleTambahan]]
                 else:
                     RulesBaru[key].append([temp_rule[0], ruleTambahan])
                 temp_rule.remove(temp_rule[0])
-                i += 1
 
             if ruleTambahan not in RulesBaru.keys():
                 RulesBaru[ruleTambahan] = [temp_rule]
@@ -90,87 +122,14 @@ def CFG_to_CNF(CFG):
             else:
                 RulesLama[ruleTambahan].append(rule)
 
+    # tambahkan rules baru ke CFG sesuai keynya
     for new_key, new_value in RulesBaru.items():
         if new_key not in CFG.keys():
             CFG[new_key] = new_value
         else:
             CFG[new_key].extend(new_value)
 
-    for del_key, del_value in RulesLama.items():
-        for del_rule in del_value:
-            CFG[del_key].remove(del_rule)
-
-    # STEP 4: Replace Terminal adjacent to a Variables
-    RulesBaru = {}
-    RulesLama = {}
-
-    j = 0
-    k = 0
-    for key, value in CFG.items():
-        for rule in value:
-            if len(rule) == 2 and is_terminal(rule[0]) and is_terminal(rule[1]):
-                ruleTambahanY = f"X{j}"
-                ruleTambahanZ = f"Y{k}"
-
-                if key not in RulesBaru.keys():
-                    RulesBaru[key] = [[ruleTambahanY, ruleTambahanZ]]
-                else:
-                    RulesBaru[key].append([ruleTambahanY, ruleTambahanZ])
-                    
-                RulesBaru[ruleTambahanY] = [[rule[0]]]
-                RulesBaru[ruleTambahanZ] = [[rule[1]]]
-
-                if key not in RulesLama.keys():
-                    RulesLama[key] = [rule]
-                else:
-                    RulesLama[key].append(rule)
-
-                j += 1
-                k += 1
-
-            elif len(rule) == 2 and is_terminal(rule[0]):
-                ruleTambahanY = f"X{j}"
-
-                if key not in RulesBaru.keys():
-                    RulesBaru[key] = [[ruleTambahanY, rule[1]]]
-                else:
-                    RulesBaru[key].append([ruleTambahanY, rule[1]])
-
-                RulesBaru[ruleTambahanY] = [[rule[0]]]
-
-                if key not in RulesLama.keys():
-                    RulesLama[key] = [rule]
-                else:
-                    RulesLama[key].append(rule)
-
-                j += 1
-
-            elif len(rule) == 2 and is_terminal(rule[1]):
-                ruleTambahanZ = f"Y{k}"
-
-                if key not in RulesBaru.keys():
-                    RulesBaru[key] = [[rule[0], ruleTambahanZ]]
-                else:
-                    RulesBaru[key].append([rule[0], ruleTambahanZ])
-
-                RulesBaru[ruleTambahanZ] = [[rule[1]]]
-
-                if key not in RulesLama.keys():
-                    RulesLama[key] = [rule]
-                else:
-                    RulesLama[key].append(rule)
-
-                k += 1
-
-            else:
-                pass
-
-    for new_key, new_value in RulesBaru.items():
-        if new_key not in CFG.keys():
-            CFG[new_key] = new_value
-        else:
-            CFG[new_key].extend(new_value)
-
+    # hapus dari CFG
     for del_key, del_value in RulesLama.items():
         for del_rule in del_value:
             CFG[del_key].remove(del_rule)
